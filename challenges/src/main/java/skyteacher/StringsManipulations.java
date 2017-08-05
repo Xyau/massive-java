@@ -8,8 +8,21 @@ import java.util.HashMap;
  * Hello world!
  *
  */
-public class StringsManipulations
-{
+public class StringsManipulations {
+
+    public static HashMap<Character,Integer> getWordCount(String s){
+        HashMap<Character,Integer> characters = new HashMap<>(25);
+        char arr[] = s.toCharArray();
+        for (char c : arr){
+            if(characters.containsKey(c)){
+                characters.put(c,characters.get(c)+1);
+            } else {
+                characters.put(c,1);
+            }
+        }
+        return characters;
+    }
+
     public static boolean allUniqueNaive(String string){
         boolean[] as = new boolean[300];
         for (int i = 0; i < string.length(); i++) {
@@ -153,5 +166,64 @@ public class StringsManipulations
         }
         return image;
     }
+
+    public static boolean isIPV4(String str){
+        String values [] = str.split("\\.");
+        if(values.length != 4) return false;
+        for (String value : values){
+            Integer field = null;
+            try{
+                field= Integer.parseInt(value);
+            }catch (NumberFormatException e){
+                return false;
+            }
+            if(field == null) return false;
+            if(field <0 || field > 255) return false;
+        }
+        return true;
+    }
+
+    public static boolean isIPV6(String str){
+        String values [] = str.split(":");
+        if(values.length != 8) return false;
+        for (String value : values){
+            Integer field = null;
+            try{
+                field= Integer.parseInt(value,16);
+            }catch (NumberFormatException e){
+                if(!value.isEmpty()){
+                    return false;
+                } else {
+                    field = 0;
+                }
+            }
+            if(field <0 || field > 65535) return false;
+        }
+        return true;
+    }
+
+    public static Integer countAnagrams(String word, String phrase){
+        String phraseWords[] = phrase.split("[ .,]");
+        Integer anagramCount = 0;
+        for (String s : phraseWords){
+            if(isAnagram(word,s)){
+                anagramCount++;
+            }
+        }
+        return anagramCount;
+    }
+
+    public static boolean isAnagram(String word, String s) {
+        HashMap<Character, Integer> wordCount = getWordCount(word);
+        HashMap<Character, Integer> sWordCount = getWordCount(s);
+        if(word.length() != s.length())return false;
+        for (Character c :sWordCount.keySet()){
+            if(!wordCount.containsKey(c)) return false;
+            else if(wordCount.get(c) != sWordCount.get(c)) return false;
+        }
+        return true;
+    }
+
+
 }
 

@@ -27,6 +27,28 @@ public class LinkedListTests {
     }
 
     @Test
+    public void mergeListsTest(){
+        Node<Integer> list1 = Node.of(13,5,6,7);
+        Node<Integer> list2 = Node.of(7,5,14,13);
+
+        Node<Integer> result = Node.mergeLists(list1,list2,(l1,l2) -> {
+            return Node.of((l1!=null?(int) l1.getData():0)+(l2!=null?(int) l2.getData():0));
+        });
+
+        softly.assertThat(result).as(list1 + " + " + list2).isEqualTo(Node.of(20,10,20,20));
+
+        list1 = Node.of(13,5,6,7,1);
+        list2 = Node.of(7,5,14,13);
+
+        result = Node.mergeLists(list1,list2,(l1,l2) -> {
+            return Node.of((l1!=null?(int) l1.getData():0)-(l2!=null?(int) l2.getData():0));
+        });
+
+        softly.assertThat(result).as(list1 + " + " + list2).isEqualTo(Node.of(6,0,-8,-6,1));
+    }
+
+
+    @Test
     public void nodeOfTest(){
         Node<Integer> start = Node.of(3,4,5,6);
         System.out.println(start);
@@ -34,6 +56,15 @@ public class LinkedListTests {
         System.out.println(start);
         start.deleteData(5);
         System.out.println(start);
+    }
+
+    @Test
+    public void hasLoopTest(){
+        Node<Integer> start = Node.of(3,4,5,6,67);
+        System.out.println(start);
+        System.out.println(start.hasLoop());
+        start.findKthToTheLastElement(1).setNext(start);
+        System.out.println(start.hasLoop());
     }
     @Test
     public void equalsTest(){
@@ -65,6 +96,13 @@ public class LinkedListTests {
         softly.assertThat(original.findKthToTheLastElement(0).getData()).isEqualTo(8);
         softly.assertThat(original.findKthToTheLastElement(6).getData()).isEqualTo(2);
         softly.assertThat(original.findKthToTheLastElement(7).getData()).isEqualTo(1);
+    }
 
+    @Test
+    public void partitionTest() {
+        Node<Integer> original = Node.of(1, 2, 3, 4, 5, 6, 7, 8);
+        original.partition(2);
+        original.partition(1);
+        original.partition(0);
     }
 }

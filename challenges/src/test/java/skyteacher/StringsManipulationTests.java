@@ -1,7 +1,10 @@
 package skyteacher;
 
+import org.assertj.core.api.JUnitSoftAssertions;
+import org.junit.Rule;
 import org.junit.Test;
 
+import java.util.BitSet;
 import java.util.Random;
 
 import static org.assertj.core.api.Assertions.*;
@@ -11,44 +14,56 @@ import static org.assertj.core.api.Assertions.*;
  */
 public class StringsManipulationTests {
 
+    @Rule
+    public final JUnitSoftAssertions softly = new JUnitSoftAssertions();
+
+
     @Test
-    public void testAllUnique(){
-        assertThat(StringsManipulations.allUniqueNaive("asd")).isEqualTo(true);
-        assertThat(StringsManipulations.allUniqueNaive("asda")).isEqualTo(false);
+    public void isAnagramtest(){
+        softly.assertThat(StringsManipulations.isAnagram("asd","sad")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isAnagram("asdaa","sad")).isEqualTo(false);
+        softly.assertThat(StringsManipulations.isAnagram("aasdaa","aaasad")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isAnagram("aasdaan","aaasadñ")).isEqualTo(false);
     }
 
     @Test
-    public void testIsPermutation(){
-        assertThat(StringsManipulations.isPermutation("asda","asdd")).isEqualTo(false);
-        assertThat(StringsManipulations.isPermutation("asd","dsa")).isEqualTo(true);
-        assertThat(StringsManipulations.isPermutation("asda","asd")).isEqualTo(false);
+    public void allUniqueTest(){
+        softly.assertThat(StringsManipulations.allUniqueNaive("asd")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.allUniqueNaive("asda")).isEqualTo(false);
+    }
+
+    @Test
+    public void isPermutationTest(){
+        softly.assertThat(StringsManipulations.isPermutation("asda","asdd")).isEqualTo(false);
+        softly.assertThat(StringsManipulations.isPermutation("asd","dsa")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isPermutation("asda","asd")).isEqualTo(false);
     }
 
     @Test
     public void testReverse(){
-        assertThat(StringsManipulations.reverse("asd")).isEqualTo("dsa");
-        assertThat(StringsManipulations.reverse("julian")).isEqualTo("nailuj");
-        assertThat(StringsManipulations.reverse("")).isEqualTo("");
+        softly.assertThat(StringsManipulations.reverse("asd")).isEqualTo("dsa");
+        softly.assertThat(StringsManipulations.reverse("julian")).isEqualTo("nailuj");
+        softly.assertThat(StringsManipulations.reverse("")).isEqualTo("");
     }
     @Test
     public void testReplace(){
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .replaceInPlace("asddddas".toCharArray(),"as".toCharArray(),"xxx".toCharArray())).isEqualTo("xxxddddxxx".toCharArray());
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .replaceInPlace("asddds".toCharArray(),"ddd".toCharArray(),"x".toCharArray())).isEqualTo("asxs".toCharArray());
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .replaceInPlace("aaasaaasaaa".toCharArray(),"s".toCharArray(),"xxx".toCharArray())).isEqualTo("aaaxxxaaaxxxaaa".toCharArray());
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .replaceInPlace("asdddds".toCharArray(),"ddd".toCharArray(),"xx".toCharArray())).isEqualTo("asxxds".toCharArray());
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .replaceInPlace("asdddds".toCharArray(),"d".toCharArray(),"x".toCharArray())).isEqualTo("asxxxxs".toCharArray());
     }
 
     @Test
     public void compressionTest(){
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .compress("aaaaasddddas")).isEqualTo("a5s1d4a1s1");
-        assertThat(StringsManipulations
+        softly.assertThat(StringsManipulations
                 .compress("asddddas")).isEqualTo("asddddas");
     }
 
@@ -61,6 +76,21 @@ public class StringsManipulationTests {
         System.out.println();
         Printer.printMatrix(image);
 
+    }
+
+    @Test
+    public void Ipv4ParseTest(){
+        softly.assertThat(StringsManipulations.isIPV4("123.45.67.4")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isIPV4("12.35.776.34")).isEqualTo(false);
+        softly.assertThat(StringsManipulations.isIPV4("12.35a.776.34")).isEqualTo(false);
+        softly.assertThat(StringsManipulations.isIPV4("12..776.34")).isEqualTo(false);
+    }
+
+     @Test
+    public void Ipv6ParseTest(){
+        softly.assertThat(StringsManipulations.isIPV6("2001:0db8:0000:00001:0000:ff00:0042:8329")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isIPV6("2001:0db8:0000::0000:ff00:0042:8329")).isEqualTo(true);
+        softly.assertThat(StringsManipulations.isIPV6("2001:0db8:0000:0000:ff00:0042:8329")).isEqualTo(false);
     }
 
 

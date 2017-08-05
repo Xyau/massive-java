@@ -1,10 +1,9 @@
 package skyteacher.linkedList;
 
-import org.javatuples.Pair;
+import skyteacher.tuples.Pair;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Objects;
+import java.util.function.BiFunction;
 
 /**
  * Created by Julian Benitez on 7/29/2017.
@@ -27,6 +26,59 @@ public class Node<T> {
         }else {
             next.appendToTail(data);
         }
+    }
+
+    public Node<T> partition(Comparable<T> pivot){
+        return null;
+    }
+
+    public static <Q,R,S> Node<S> mergeLists(Node num1, Node num2, BiFunction<Node<Q>,Node<R>,Node<S>> function){
+        Node current1 = num1;
+        Node current2 = num2;
+        Node result = null;
+        Node nodeTail = null;
+        Node nodeToAdd;
+
+
+        do {
+            nodeToAdd = function.apply(current1,current2);
+            if(result == null || nodeTail == null){
+                result = nodeToAdd;
+                nodeTail = nodeToAdd;
+            } else {
+                nodeTail.next = nodeToAdd;
+                nodeTail = nodeToAdd.getTail();
+            }
+
+
+            if (current1 != null) current1 = current1.next;
+            if (current2 != null) current2 = current2.next;
+        } while (current1 != null || current2 != null);
+
+        return result;
+    }
+
+    public Node<T> getTail(){
+        Node<T> tail = this;
+
+        while (tail.next != null){
+            tail = tail.next;
+        }
+        return tail;
+    }
+
+    public void setNext(Node<T> node){
+        next = node;
+    }
+
+    public boolean hasLoop(){
+        HashSet<Node> nodes = new HashSet<>();
+        Node current = this;
+        do {
+            if(nodes.contains(current)) return true;
+            else current = current.next;
+        } while (current != null);
+        return false;
     }
 
     public Node<T> deleteData(T data){
@@ -73,19 +125,19 @@ public class Node<T> {
 
     private Pair<Node<T>,Integer> findKthToTheLastElementRec(Integer k) {
         if(next == null){
-            return Pair.with(this,0);
+            return Pair.of(this,0);
         } else {
             Pair<Node<T>,Integer> node = next.findKthToTheLastElementRec(k);
-            if(node.getValue1()+1 == k){
-                return Pair.with(this,node.getValue1()+1);
+            if(node.get1()+1 == k){
+                return Pair.of(this,node.get1()+1);
             } else {
-                return Pair.with(node.getValue0(),node.getValue1()+1);
+                return Pair.of(node.get0(),node.get1()+1);
             }
         }
     }
 
     public Node<T> findKthToTheLastElement(Integer k){
-        return findKthToTheLastElementRec(k).getValue0();
+        return findKthToTheLastElementRec(k).get0();
     }
 
     @Override
