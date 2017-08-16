@@ -25,6 +25,19 @@ public class Printer {
         }
     }
 
+    public static void printArray(int[] array){
+        if(array.length == 0) {
+            System.out.println("Empty array");
+            return;
+        }
+        StringBuffer buffer = new StringBuffer(array.length);
+        for (int i = 0; i < array.length; i++) {
+            buffer.append(array[i]);
+            buffer.append(" ");
+        }
+        System.out.println(buffer);
+    }
+
     public static void printCollection(Collection collection){
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append("{");

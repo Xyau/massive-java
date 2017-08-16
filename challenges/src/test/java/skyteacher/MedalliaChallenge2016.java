@@ -62,10 +62,15 @@ public class MedalliaChallenge2016 {
         softly.assertThat(minimumStep(50)).isEqualTo(8);
     }
 
+
     @Test
     public void arrayGaemMinSteps(){
         softly.assertThat(arrayGameMinimumSteps(CollectionsV0.arrayListOf(1,2,3))).isEqualTo(3);
         softly.assertThat(arrayGameMinimumSteps(CollectionsV0.arrayListOf(2,2,2))).isEqualTo(0);
+    }
+    @Test
+    public void mostRepeats(){
+        System.out.println(CollectionsV0.mostFrequentNumber(new int[]{34,4,3,5,7,4,3,5,4}));
     }
 
     private Integer minimumStep(Integer number){
@@ -96,4 +101,6 @@ public class MedalliaChallenge2016 {
         }
         return minLife;
     }
+
+
 }
